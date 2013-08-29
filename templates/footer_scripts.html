@@ -1,0 +1,42 @@
+{% load static %}
+<!--[if !IE]>-->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='{% static "js/uncompressed/jquery-2.0.3.js" %}'>"+"<"+"/script>");
+    </script>
+<!--<![endif]-->
+
+<!--[if IE]>
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='{% static "js/uncompressed/jquery-1.10.2.js" %}'>"+"<"+"/script>");
+    </script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" />
+<![endif]-->
+<!--[if gte IE 8]>
+    <script src="{% static "js/uncompressed/cors/jquery.xdr-transport.js" %}"/>
+<![endif]-->
+
+
+<script type="text/javascript">
+    if("ontouchend" in document) document.write("<script src='{% static "js/uncompressed/jquery.mobile.custom.js" %}'>"+"<"+"/script>");
+</script>
+<script src="{% static "js/uncompressed/bootstrap.js" %}"></script>
+
+<!--[if lte IE 8]>
+  <script src="{% static "js/uncompressed/excanvas.js" %}"></script>
+<![endif]-->
+
+<script src="{% static "js/uncompressed/jquery-ui-1.10.3.custom.js" %}"></script>
+<script src="{% static "js/uncompressed/jquery.ui.touch-punch.js" %}"></script>
+<script src="{% static "js/vendor/jquery.ui.widget.js" %}"></script>
+<script src="{% static "js/uncompressed/jquery.slimscroll.js" %}"></script>
+<script src="{% static "js/uncompressed/jquery.easy-pie-chart.js" %}"></script>
+<script src="{% static "js/uncompressed/jquery.sparkline.js" %}"></script>
+<script src="{% static "js/uncompressed/flot/jquery.flot.js" %}"></script>
+<script src="{% static "js/uncompressed/flot/jquery.flot.pie.js" %}"></script>
+<script src="{% static "js/uncompressed/flot/jquery.flot.resize.js" %}"></script>
+
+<script src="{% static "js/uncompressed/ace-elements.js" %}"></script>
+<script src="{% static "js/uncompressed/ace.js" %}"></script>

@@ -1,0 +1,40 @@
+{% extends 'promotions/new.html' %}
+{% block form_content %}
+    <div class="control-group {% if form.description.errors %}error{% endif %}" id="group-description">
+        <label class="control-label" for="{{ form.description.auto_id }}">{{ form.description.label }}</label>
+
+        <div class="controls">
+            {{ form.description }}
+        </div>
+    </div>
+    <div class="control-group input-append {% if form.start_date.errors %}error{% endif %}" id="group-start_date">
+        <label class="control-label" for="{{ form.start_date.auto_id }}">{{ form.start_date.label }}</label>
+
+        <div class="controls">
+            {{ form.start_date }}
+             <span class="add-on">
+                <i class="icon-calendar"></i>
+            </span>
+        </div>
+    </div>
+    <div class="control-group input-append {% if form.end_date.errors %}error{% endif %}" id="group-end_date">
+        <label class="control-label" for="{{ form.end_date.auto_id }}">{{ form.end_date.label }}</label>
+
+        <div class="controls">
+            {{ form.end_date }}
+             <span class="add-on">
+                <i class="icon-calendar"></i>
+            </span>
+        </div>
+    </div>
+    <div class="control-group {% if form.active.errors %}error{% endif %}">
+        <label class="control-label" for="{{ form.active.auto_id }}">{{ form.active.label }}</label>
+
+        <div class="controls">
+            <label>
+                {{ form.active }}
+                <span class="lbl"></span>
+            </label>
+        </div>
+    </div>
+{% endblock %}

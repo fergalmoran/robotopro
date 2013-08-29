@@ -1,0 +1,12 @@
+{% load static %}
+<script src="{% static "js/uncompressed/jquery.form.js" %}"></script>
+<script src="{% static "js/uncompressed/date-time/bootstrap-datepicker.js" %}"></script>
+<script src="{% static "js/uncompressed/date-time/moment.js" %}"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.date-picker').datepicker().next().on(ace.click_event, function () {
+            $(this).prev().focus();
+        });
+    });
+</script>

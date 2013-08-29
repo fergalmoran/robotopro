@@ -1,0 +1,159 @@
+{% load static %}
+<form id="fileupload" action="{{ upload_handler_url }}" method="POST" enctype="multipart/form-data" >
+    {% csrf_token %}
+    <noscript>
+        <input type="hidden" name="redirect" value="{{ request.path }}">
+    </noscript>
+    <div class="fileupload-buttonbar">
+        <div class="span7">
+            <span class="btn btn-success fileinput-button">
+                <i class="icon-plus icon-white"></i>
+                <span>Add files...</span>
+                    <input type="file" name="files[]"
+                           multiple
+                            {% if accepted_mime_types %}
+                                accept = '{{ accepted_mime_types|join:"," }}'
+                            {% endif %}>
+            </span>
+            <button type="submit" class="btn btn-primary start">
+                <i class="icon-upload icon-white"></i>
+                <span>Start upload</span>
+            </button>
+            <button type="reset" class="btn btn-warning cancel">
+                <i class="icon-ban-circle icon-white"></i>
+                <span>Cancel upload</span>
+            </button>
+            <button type="button" class="btn btn-danger delete">
+                <i class="icon-trash icon-white"></i>
+                <span>Delete</span>
+            </button>
+            <input type="checkbox" class="toggle">
+        </div>
+        <div class="span5 fileupload-progress fade">
+            <div
+                class="progress progress-success progress-striped active"
+                role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                <div class="bar" style="width:0%;"></div>
+            </div>
+            <div class="progress-extended">&nbsp;</div>
+        </div>
+    </div>
+    <div class="fileupload-loading"></div>
+    <br>
+    <table role="presentation" class="table table-striped">
+        <tbody class="files" data-toggle="modal-gallery"
+               data-target="#modal-gallery"></tbody>
+    </table>
+</form>
+<div id="modal-gallery" class="modal modal-gallery hide fade"
+    data-filter=":odd" tabindex="-1">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h3 class="modal-title"></h3>
+    </div>
+    <div class="modal-body"><div class="modal-image"></div></div>
+    <div class="modal-footer">
+        <a class="btn modal-download" target="_blank">
+            <i class="icon-download"></i>
+            <span>Download</span>
+        </a>
+        <a class="btn btn-success modal-play modal-slideshow"
+            data-slideshow="5000">
+            <i class="icon-play icon-white"></i>
+            <span>Slideshow</span>
+        </a>
+        <a class="btn btn-info modal-prev">
+            <i class="icon-arrow-left icon-white"></i>
+            <span>Previous</span>
+        </a>
+        <a class="btn btn-primary modal-next">
+            <span>Next</span>
+            <i class="icon-arrow-right icon-white"></i>
+        </a>
+    </div>
+</div>
+
+<script id="template-upload" type="text/x-tmpl">
+{{ JQ_OPEN }} for (var i=0, file; file=o.files[i]; i++) { {{ JQ_CLOSE }}
+    <tr class="template-upload fade">
+        <td class="preview"><span class="fade"></span></td>
+        <td class="name"><span>{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}</span></td>
+        <td class="size"><span>{{ JQ_OPEN }}=o.formatFileSize(file.size){{ JQ_CLOSE }}</span></td>
+
+        {{ JQ_OPEN }} if (file.error) { {{ JQ_CLOSE }}
+            <td class="error" colspan="2">
+                <span class="label label-important">Error</span>
+                {{ JQ_OPEN }}=file.error{{ JQ_CLOSE }}
+            </td>
+        {{ JQ_OPEN }} } else if (o.files.valid && !i) { {{ JQ_CLOSE }}
+
+            <td>
+                <div
+                    class="progress progress-success progress-striped active"
+                    role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                    aria-valuenow="0">
+                    <div class="bar" style="width:0%;"></div>
+                </div>
+            </td>
+            <td>{{ JQ_OPEN }} if (!o.options.autoUpload) { {{ JQ_CLOSE }}
+                <button class="btn btn-primary start">
+                    <i class="icon-upload icon-white"></i>
+                    <span>Start</span>
+                </button>
+            {{ JQ_OPEN }} } {{ JQ_CLOSE }}</td>
+        {{ JQ_OPEN }} } else { {{ JQ_CLOSE }}
+            <td colspan="2"></td>
+        {{ JQ_OPEN }} } {{ JQ_CLOSE }}
+        <td>{{ JQ_OPEN }} if (!i) { {{ JQ_CLOSE }}
+            <button class="btn btn-warning cancel">
+                <i class="icon-ban-circle icon-white"></i>
+                <span>Cancel</span>
+            </button>
+        {{ JQ_OPEN }} } {{ JQ_CLOSE }}</td>
+    </tr>
+{{ JQ_OPEN }} } {{ JQ_CLOSE }}
+</script>
+
+<script id="template-download" type="text/x-tmpl">
+{{ JQ_OPEN }} for (var i=0, file; file=o.files[i]; i++) { {{ JQ_CLOSE }}
+    <tr class="template-download fade">
+        {{ JQ_OPEN }} if (file.error) { {{ JQ_CLOSE }}
+            <td></td>
+            <td class="name"><span>{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}</span></td>
+            <td class="size"><span>{{ JQ_OPEN }}=o.formatFileSize(file.size){{ JQ_CLOSE }}</span></td>
+            <td class="error" colspan="2"><span class="label label-important">Error</span>
+            {{ JQ_OPEN }}=file.error{{ JQ_CLOSE }}</td>
+        {{ JQ_OPEN }} } else { {{ JQ_CLOSE }}
+            <td class="preview">
+            {{ JQ_OPEN }} if (file.thumbnail_url) { {{ JQ_CLOSE }}
+                <a href="{{ JQ_OPEN }}=file.url{{ JQ_CLOSE }}"
+                   title="{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}"
+                   data-gallery="gallery" download="{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}">
+                   <img src="{{ JQ_OPEN }}=file.thumbnail_url{{ JQ_CLOSE }}">
+                </a>
+            {{ JQ_OPEN }} } {{ JQ_CLOSE }}</td>
+            <td class="name">
+                <a href="{{ JQ_OPEN }}=file.url{{ JQ_CLOSE }}"
+                   title="{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}"
+                   data-gallery="{{ JQ_OPEN }}=file.thumbnail_url&&'gallery'{{ JQ_CLOSE }}"
+                   download="{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}">{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}
+                </a>
+            </td>
+            <td class="size"><span>{{ JQ_OPEN }}=o.formatFileSize(file.size){{ JQ_CLOSE }}</span></td>
+            <td colspan="2"></td>
+        {{ JQ_OPEN }} } {{ JQ_CLOSE }}
+        <td>
+            <button class="btn btn-danger delete" data-type="{{ JQ_OPEN }}=file.delete_type{{ JQ_CLOSE }}"
+                    data-data='{ "csrfmiddlewaretoken" : "{{ csrf_token }}" }'
+                    data-url="{{ JQ_OPEN }}=file.delete_url{{ JQ_CLOSE }}"
+                    {{ JQ_OPEN }} if (file.delete_with_credentials) { {{ JQ_CLOSE }}
+                         data-xhr-fields='{"withCredentials":true}'
+                    {{ JQ_OPEN }} } {{ JQ_CLOSE }}>
+                <i class="icon-trash icon-white"></i>
+                <span>Delete</span>
+            </button>
+            <input type="checkbox" name="delete" value="1" class="toggle">
+        </td>
+    </tr>
+{{ JQ_OPEN }} } {{ JQ_CLOSE }}
+</script>

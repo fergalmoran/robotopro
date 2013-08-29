@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block heading %}Promotions{% endblock %}
+{% block sub_heading %}create new promotion{% endblock %}
+{% block header_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static "demo/blueimp-gallery.min.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "css/jquery.fileupload-ui.css" %}"/>
+    <noscript>
+        <link rel="stylesheet" href="{% static "css/jquery.fileupload-ui-noscript.css" %}">
+    </noscript>
+    {{ wizard.form.media }}
+{% endblock %}
+
+{% block content %}
+    <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+    <div id="promotion-wizard" class="row-fluid hide" data-target="#step-container">
+        <ul class="wizard-steps">
+            <li data-target="#step-details" class="active">
+                <span class="step">1</span>
+                <span class="title">Promotion details</span>
+            </li>
+            <li data-target="#step-body">
+                <span class="step">2</span>
+                <span class="title">Promotion body</span>
+            </li>
+            <li data-target="#step-files">
+                <span class="step">3</span>
+                <span class="title">Promotion contents</span>
+            </li>
+        </ul>
+    </div>
+    <div class="step-content row-fluid position-relative" id="step-container">
+        <div class="step-pane active" id="step-details">
+            <h3 class="lighter block green">Enter the following information</h3>
+
+            <form id="promotion-form" action="" method="post" class="form-horizontal">
+                {% csrf_token %}
+                {{ wizard.management_form }}
+                {% block form_content %}
+                {% endblock %}
+                <hr>
+
+                <div class="wizard-actions">
+                    {% if wizard.steps.prev %}
+                        <button class="btn btn-prev">
+                            <i class="icon-arrow-left"></i>
+                            Prev
+                        </button>
+                    {% endif %}
+                    <button class="btn btn-success btn-next" data-last="Finish ">
+                        Next
+                        <i class="icon-arrow-right icon-on-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer_scripts %}
+    {% include "scripts/wizard.html" %}
+    <script type="text/javascript">
+        $(function () {
+            $(".btn-next").click(function () {
+                $('#promotion-form').submit();
+            });
+        });
+    </script>
+    {% include "scripts/forms.html" %}
+{% endblock %}

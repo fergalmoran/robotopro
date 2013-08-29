@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block heading %}Promotions{% endblock %}
+{% block sub_heading %}list of promotions{% endblock %}
+{% block content %}
+    <table id="promotions-table" class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Description</th>
+            <th><i class="icon-time bigger-110 hidden-phone"></i> Start Date</th>
+            <th><i class="icon-time bigger-110 hidden-phone"></i> End Date</th>
+            <th class="hidden-480">Status</th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for item in object_list %}
+            <tr>
+                <td>
+                    <a href="{% url 'promotion-edit' item.id %}">{{ item.description }}</a>
+                </td>
+                <td>{{ item.start_date }}</td>
+                <td>{{ item.end_date }}</td>
+                <td>
+                    {% if item.active %}
+                        <span class="label label-warning">Active</span>
+                    {% else %}
+                        <span class="label label-inverse arrowed-in">Inactive</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <div class="hidden-phone visible-desktop action-buttons">
+                        <a class="blue" href="#">
+                            <i class="icon-zoom-in bigger-130"></i>
+                        </a>
+
+                        <a class="green" href="#">
+                            <i class="icon-pencil bigger-130"></i>
+                        </a>
+
+                        <a class="red" href="#">
+                            <i class="icon-trash bigger-130"></i>
+                        </a>
+                    </div>
+
+                    <div class="hidden-desktop visible-phone">
+                        <div class="inline position-relative">
+                            <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown">
+                                <i class="icon-caret-down icon-only bigger-120"></i>
+                            </button>
+
+                            <ul class="dropdown-menu dropdown-icon-only dropdown-yellow pull-right dropdown-caret dropdown-close">
+                                <li>
+                                    <a href="#" class="tooltip-info" data-rel="tooltip" title="View">
+																	<span class="blue">
+																		<i class="icon-zoom-in bigger-120"></i>
+																	</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+																	<span class="green">
+																		<i class="icon-edit bigger-120"></i>
+																	</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+																	<span class="red">
+																		<i class="icon-trash bigger-120"></i>
+																	</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block footer_scripts %}
+    <script src="{% static "js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "js/jquery.dataTables.bootstrap.js" %}"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#promotions-table').dataTable({
+                "aoColumns": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "bSortable": false }
+                ] });
+
+        });
+    </script>
+{% endblock %}

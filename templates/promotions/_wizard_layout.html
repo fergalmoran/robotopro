@@ -1,0 +1,23 @@
+{% extends 'promotions/new.html' %}
+{% load static %}
+{% block form_content %}
+    <div class="wysiwyg-editor" id="_proxy_{{ form.body_text.auto_id }}"></div>
+    {{ form.body_text }}
+{% endblock %}
+
+{% block footer_scripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "js/uncompressed/jquery.hotkeys.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/uncompressed/bootstrap-wysiwyg.js" %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            'use strict';
+            $('#_proxy_{{ form.body_text.auto_id }}').ace_wysiwyg({
+                speech_button: false
+            }).prev().addClass('wysiwyg-style2');
+        });
+        $("#promotion-form").on("submit", function () {
+            $("#{{ form.body_text.auto_id }}").val($("#_proxy_{{ form.body_text.auto_id }}").html());
+        });
+    </script>
+{% endblock %}

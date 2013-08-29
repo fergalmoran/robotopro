@@ -1,0 +1,43 @@
+{% load static %}
+<script src="{% static "js/uncompressed/fuelux/fuelux.wizard.js" %}"></script>
+<script type="text/javascript">
+    $(function () {
+        var wizard = $('#promotion-wizard').ace_wizard();
+        wizard.on('change', function (e, info) {
+            if (info.step == 1) {
+                var detailsForm = $('#form_wizard_details');
+                detailsForm.ajaxSubmit({
+                    success: function (e, val, errors) {
+                        $('#id_pk').val(e.pk);
+                        wizard.wizard('selectedItem', {step: 2});
+                    },
+                    error: function (response, status, err) {
+                        $.each(response.responseJSON, function (item, error) {
+                            $('#group-' + item).addClass('error');
+                            $('#help-inline-' + item).text(error);
+                        });
+                    }
+                });
+                e.preventDefault();
+            } else if (info.step == 2) {
+                var bodyForm = $('#form_wizard_body');
+                bodyForm.ajaxSubmit({
+                    success: function (e, val, errors) {
+                        $('#id_pk').val(e.pk);
+                        wizard.wizard('selectedItem', {step: 3});
+                    },
+                    error: function (e, val, errors) {
+                        $.each(e.responseJSON, function (item, error) {
+                            $('#group-' + item).addClass('error');
+                            $('#help-inline-' + item).text(error);
+                        });
+                    }
+                });
+                e.preventDefault();
+            }
+        });
+        wizard.on('finished', function () {
+            alert('Success!');
+        });
+    });
+</script>
